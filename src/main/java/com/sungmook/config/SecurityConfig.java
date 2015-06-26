@@ -15,17 +15,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 @EnableWebMvcSecurity
+@SuppressWarnings("unused")
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .headers()
+                .frameOptions().disable()                   // h2 console 에 접근하기 위해 열어둠
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/users").hasRole("ADMIN")
-                .anyRequest().authenticated();
-
+//                .anyRequest().authenticated();
+                .anyRequest().permitAll();
         http
                 .formLogin()
                 .failureUrl("/login?error")
