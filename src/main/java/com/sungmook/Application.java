@@ -24,6 +24,22 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+//
+//    @Bean
+//    public HttpMessageConverter<String> responseBodyConverter() {
+//        return new StringHttpMessageConverter(Charset.forName("UTF-8"));
+//    }
+//
+//    @Bean
+//    @Order(Ordered.HIGHEST_PRECEDENCE)
+//    CharacterEncodingFilter characterEncodingFilter() {
+//        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+//        filter.setEncoding("UTF-8");
+//        filter.setForceEncoding(true);
+//        return filter;
+//    }
+
+
     // After Start
 
     private final Log logger = LogFactory.getLog(getClass());

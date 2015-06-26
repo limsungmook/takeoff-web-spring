@@ -29,7 +29,7 @@ Web 서비스를 만들 때 spring 으로 쉽게 시작할 수 있는 뼈대를 
 bootstrap
 
 # Required
-JDK 1.7
+JDK 1.8
 
 # 실행하기
 mvn spring-boot:run

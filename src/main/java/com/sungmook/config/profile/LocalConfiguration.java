@@ -28,4 +28,5 @@ public class LocalConfiguration {
         registration.addUrlMappings("/console/*");
         return registration;
     }
+
 }
