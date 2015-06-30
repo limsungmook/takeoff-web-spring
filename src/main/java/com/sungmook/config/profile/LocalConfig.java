@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @Configuration
 @Profile("local")
 @SuppressWarnings(value = "unused")
-public class LocalConfiguration {
+public class LocalConfig {
 
     /**
      * h2 Memory DB 의 콘솔을 열어준다.

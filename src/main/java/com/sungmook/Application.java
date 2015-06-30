@@ -20,6 +20,8 @@ import java.util.List;
 @SpringBootApplication
 public class Application {
 
+
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -69,7 +71,7 @@ public class Application {
         Member admin = memberRepository.findByUsername("admin");
         if( admin == null ){
             admin = new Member();
-            admin.setUsername("admin");
+            admin.setUsername("admin@sungmook.com");
             admin.setPassword("admin");
 
             admin.addRole(Role.asAdmin()).addRole(Role.asUser());

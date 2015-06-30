@@ -1,8 +1,13 @@
 package com.sungmook.domain;
 
+import com.sungmook.domain.validation.constrant.NoDuplicatedUsername;
+import lombok.Data;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +16,16 @@ import java.util.List;
  */
 
 @Entity
+@Data
 public class Member {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Email
+    @NotNull
+    @Size(max=255)
     private String username;
 
     private String encryptedPassword;
@@ -45,47 +54,4 @@ public class Member {
         return this;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 }

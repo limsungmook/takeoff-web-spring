@@ -7,7 +7,7 @@
 </head>
 <body>
     문제가 발생하여 요청을 진행할 수 없습니다.
-    Status : {{status}}
-    error : {{error}}
+    Status : ${status}
+    error : ${error}
 </body>
 </html>

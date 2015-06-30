@@ -30,6 +30,7 @@ bootstrap
 
 # Required
 JDK 1.8
+lombok plugin
 
 # 실행하기
 mvn spring-boot:run

@@ -6,6 +6,8 @@
     <title></title>
 </head>
 <body>
-    <a href="/auth/signup">회원가입</a>
+    날짜 : ${time?date}
+    <br/>
+    ${message}
 </body>
 </html>
