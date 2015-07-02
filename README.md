@@ -29,11 +29,11 @@ Web 서비스를 만들 때 spring 으로 쉽게 시작할 수 있는 뼈대를 
 bootstrap
 
 # Required
-JDK 1.8
-lombok plugin
+- JDK 1.8
+- lombok plugin
 
 # 실행하기
 mvn spring-boot:run
 
 # IntelliJ 에서 실행하기
-Edit Configurations -> '+' 버튼 -> maven -> Command Line : spring-boot:run -> 시작
+Edit Configurations -> '+' 버튼 -> Spring boot -> Main Class : com.sungmook.Application

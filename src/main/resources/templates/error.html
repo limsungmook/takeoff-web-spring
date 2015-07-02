@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>회원가입</title>
+</head>
+<body>
+
+    <div layout:fragment="content"
+         class="container">
+        문제가 발생하여 요청을 진행할 수 없습니다.
+        Status : <span th:text="${status}">오류 상태</span>
+        error : <span th:text="${error}">오류 메시지</span>
+    </div>
+</body>
+</html>

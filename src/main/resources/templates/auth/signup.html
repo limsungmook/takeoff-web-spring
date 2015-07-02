@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>회원가입</title>
+</head>
+<body>
+
+    <div layout:fragment="content"
+         class="container">
+        <form id="signupForm"
+              th:action="@{/auth/signup}"
+              th:object="${signupMember}"
+              action="#"
+              method="post">
+            <div th:if="${#fields.hasErrors('*')}"
+                 class="alert alert-error">
+                <p th:each="error : ${#fields.errors('*')}"
+                   th:text="${error}">
+                    Validation error
+                </p>
+            </div>
+            <div class="pull-right">
+                <a th:href="@{/}" href="messages.html">
+                    Messages
+                </a>
+            </div>
+            <label >Email</label>
+            <input type="email"
+                   th:field="*{username}"
+                   th:class="${#fields.hasErrors('username')} ? 'field-error'"/>
+            <label>Password</label>
+            <input
+                    type="password"
+                th:field="*{password}"
+                th:class="${#fields.hasErrors('password')} ? 'field-error'"/>
+            <input
+                    type="password"
+                    th:field="*{reTypePassword}"
+                    th:class="${#fields.hasErrors('reTypePassword')} ? 'field-error'"/>
+            <div class="form-actions">
+                <input type="submit" value="Create"/>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

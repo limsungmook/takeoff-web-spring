@@ -1,11 +1,12 @@
 package com.sungmook.domain;
 
-import com.sungmook.domain.validation.constrant.NoDuplicatedUsername;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -30,9 +31,6 @@ public class Member {
 
     private String encryptedPassword;
 
-    @Transient
-    private String password;
-
     private boolean admin;
 
 
@@ -40,11 +38,6 @@ public class Member {
     private List<Role> roles;
 
 
-    public void setPassword(String password){
-        this.password = password;
-        String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-        this.setEncryptedPassword(encryptedPassword);
-    }
 
     public Member addRole(Role role){
         if( roles == null ) {

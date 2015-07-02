@@ -37,6 +37,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             roles = new HashSet<GrantedAuthority>();
             roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
-        return new SessionUser(member.getUsername(), member.getPassword(), roles);
+        return new SessionUser(member.getUsername(), member.getEncryptedPassword(), roles);
     }
 }

@@ -1,12 +1,12 @@
 package com.sungmook;
 
 
-import com.sungmook.domain.Member;
 import com.sungmook.domain.Role;
+import com.sungmook.domain.SignupMember;
 import com.sungmook.repository.MemberRepository;
 import com.sungmook.repository.RoleRepository;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,7 +44,7 @@ public class Application {
 
     // After Start
 
-    private final Log logger = LogFactory.getLog(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private MemberRepository memberRepository;
@@ -68,14 +68,13 @@ public class Application {
          * 관리자 계정 Init
          * admin/admin
          */
-        Member admin = memberRepository.findByUsername("admin");
-        if( admin == null ){
-            admin = new Member();
+        if( memberRepository.findByUsername("admin") == null ){
+            SignupMember admin = new SignupMember();
             admin.setUsername("admin@sungmook.com");
             admin.setPassword("admin");
 
             admin.addRole(Role.asAdmin()).addRole(Role.asUser());
-            memberRepository.save(admin);
+            memberRepository.save(admin.buildMember());
         }
     }
 
