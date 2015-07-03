@@ -1,6 +1,7 @@
 package com.sungmook.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +10,7 @@ import javax.persistence.Id;
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
 @Entity
-public class Role {
+public class Role implements GrantedAuthority {
 
     public static final String ADMIN = "ROLE_ADMIN";
     public static final String USER = "ROLE_USER";
@@ -52,5 +53,10 @@ public class Role {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.role;
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.security.Principal;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * 기타 세션 정보들을 저장한다.
@@ -12,8 +12,8 @@ import java.util.Set;
  */
 public class SessionUser extends User implements Principal{
 
-    public SessionUser(String username, String password, Set<GrantedAuthority> roles) {
-        super(username, password, roles);
+    public SessionUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
     }
 
     @Override

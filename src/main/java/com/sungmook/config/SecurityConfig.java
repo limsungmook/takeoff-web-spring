@@ -1,6 +1,5 @@
 package com.sungmook.config;
 
-import com.sungmook.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,6 +7,8 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -37,12 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().permitAll();
         http
                 .formLogin()
-                .failureUrl("/login?error")
+                .failureUrl("/auth/login?error")
                 .defaultSuccessUrl("/")
-                .loginPage("/login")
+                .loginPage("/auth/login")
                 .permitAll()
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout")).logoutSuccessUrl("/")
                 .permitAll();
 
 
@@ -52,11 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
         @Autowired
-        private CustomUserDetailsService customUserDetailsService;
+        private UserDetailsService userDetailsService;
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(customUserDetailsService);
+            auth.userDetailsService(userDetailsService)
+                    .passwordEncoder(new BCryptPasswordEncoder());
         }
     }
 }
