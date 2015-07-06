@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @Controller
 public class AuthController {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private MessageHelper messageHelper;
@@ -46,6 +46,8 @@ public class AuthController {
 
     @RequestMapping(path="/auth/signup", method = RequestMethod.POST)
     public String signup(@Valid SignupMember signupMember, BindingResult bindingResult) throws BadHttpRequest {
+
+        logger.debug("가입 요청");
 
         if( bindingResult.hasErrors() ){
             return "/auth/signup";

@@ -43,6 +43,7 @@ public class SignupMemberTest {
 
         SignupMember signupMember = new SignupMember();
         signupMember.setPassword("test");
+        signupMember.setReTypePassword("test");
 
         Set<ConstraintViolation<SignupMember>> constraintViolations =
                 validator.validate(signupMember);

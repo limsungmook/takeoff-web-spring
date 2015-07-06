@@ -1,6 +1,7 @@
 package com.sungmook.config.profile;
 
 import org.h2.server.web.WebServlet;
+import org.slf4j.Logger;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,9 @@ import java.sql.SQLException;
 @Profile("local")
 @SuppressWarnings(value = "unused")
 public class LocalConfig {
+
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+
 
     /**
      * h2 Memory DB 의 콘솔을 열어준다.

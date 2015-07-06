@@ -60,8 +60,9 @@ public class Application {
          */
         List<Role> roles = roleRepository.findAll();
         if( roles == null || roles.isEmpty() ){
-            roleRepository.saveAndFlush(Role.asAdmin());
-            roleRepository.saveAndFlush(Role.asUser());
+            for( Role.Value value : Role.Value.values() ){
+                roleRepository.saveAndFlush(Role.buildFromValue(value));
+            }
         }
 
         /**
@@ -73,7 +74,11 @@ public class Application {
             admin.setUsername("admin@sungmook.com");
             admin.setPassword("admin");
 
-            admin.addRole(Role.asAdmin()).addRole(Role.asUser());
+            admin
+                    .addRole(Role.buildFromValue(Role.Value.ADMIN))
+                    .addRole(Role.buildFromValue(Role.Value.USER))
+                    .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
+
             memberRepository.save(admin.buildMember());
         }
     }

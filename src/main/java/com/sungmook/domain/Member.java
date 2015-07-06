@@ -47,4 +47,13 @@ public class Member {
         return this;
     }
 
+    public Member removeRole(Role role) {
+        if( roles == null ) {
+            return this;
+        }
+        roles.remove(role);
+
+        return this;
+
+    }
 }

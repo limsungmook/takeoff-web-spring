@@ -1,6 +1,7 @@
 package com.sungmook.domain;
 
 import com.sungmook.domain.validation.constrant.NoDuplicatedUsername;
+import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -9,7 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * Persistent 상태가 되지 않고 입력된 값을 검증하는 용도로 쓰임.
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
+@Data
 public class SignupMember extends Member {
+
+    public SignupMember() {
+        this.addRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
+    }
 
     /**
      * Form에 입력된 값을 기반으로 Member 를 만들어 리턴한다.
@@ -42,23 +48,11 @@ public class SignupMember extends Member {
     @NotEmpty(message = "{com.sungmook.domain.SignupMember.reTypePassword.NotEmpty}")
     private String reTypePassword;
 
-    public String getPassword(){
-        return this.password;
-    }
 
     public void setPassword(String password){
         this.password = password;
         String encryptedPassword = new BCryptPasswordEncoder().encode(password);
         this.setEncryptedPassword(encryptedPassword);
-    }
-
-
-    public String getReTypePassword(){
-        return reTypePassword;
-    }
-
-    public void setReTypePassword(String reTypePassword){
-        this.reTypePassword = reTypePassword;
     }
 
 }

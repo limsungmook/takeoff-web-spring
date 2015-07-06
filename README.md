@@ -34,6 +34,14 @@ bootstrap
 - lombok plugin
 
 # 실행하기
+
+1. 환경변수에 gmail 의 id 와 password 넣어야함
+vi ~/.bash_profile
+
+# 아래 두 줄을 본인 계정으로 넣음(보안상 코드에 넣어도 괜찮으면 application.properties 에 넣어도 됨)
+export TAKEOFF_MAIL_USERNAME=xxx@xxx.com
+export TAKEOFF_MAIL_PASSWORD=xxxxxxx
+
 mvn spring-boot:run
 
 # IntelliJ 에서 실행하기

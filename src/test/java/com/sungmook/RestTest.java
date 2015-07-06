@@ -38,7 +38,7 @@ public class RestTest {
     }
 
     @Test
-    public void testFreeMarkerErrorTemplate() throws Exception {
+    public void testThymeleafErrorTemplate() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
         HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
