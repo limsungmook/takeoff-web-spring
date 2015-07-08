@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Layout</title>
     <link rel="stylesheet"
@@ -16,9 +18,16 @@
             </a>
             <ul class="nav">
                 <li>
-                    <a th:href="@{/}" href="messages.html">
-                        Messages
+                    <a th:href="@{/}" href="/">
+                        Home
                     </a>
+                </li>
+                <li>
+                    <span sec:authentication="username">fake@gmail.com</span>
+                </li>
+                <li>
+                    <a href="/auth/signup">회원가입</a>
+                    <a href="/auth/login">로그인</a>
                 </li>
             </ul>
         </div>

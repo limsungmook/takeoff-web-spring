@@ -24,30 +24,58 @@ public class WiserAssertions {
         this.messages = messages;
     }
 
-    public WiserAssertions from(String from) {
-        findFirstOrElseThrow(m -> m.getEnvelopeSender().equals(from),
-                assertionError("No message from [{0}] found!", from));
+    public WiserAssertions from(final String from) {
+        findFirstOrElseThrow(new Predicate<WiserMessage>() {
+            @Override
+            public boolean test(WiserMessage m) {
+                return m.getEnvelopeSender().equals(from);
+            }
+        }, assertionError("No message from [{0}] found!", from));
         return this;
     }
 
-    public WiserAssertions to(String to) {
-        findFirstOrElseThrow(m -> m.getEnvelopeReceiver().equals(to),
+    public WiserAssertions to(final String to) {
+        findFirstOrElseThrow(new Predicate<WiserMessage>() {
+                                 @Override
+                                 public boolean test(WiserMessage m) {
+                                     return m.getEnvelopeReceiver().equals(to);
+                                 }
+                             },
                 assertionError("No message to [{0}] found!", to));
         return this;
     }
 
-    public WiserAssertions withSubject(String subject) {
-        Predicate<WiserMessage> predicate = m -> subject.equals(unchecked(getMimeMessage(m)::getSubject));
+    public WiserAssertions withSubject(final String subject) {
+        Predicate<WiserMessage> predicate = new Predicate<WiserMessage>() {
+            @Override
+            public boolean test(WiserMessage m) {
+                final MimeMessage mimeMessage = WiserAssertions.this.getMimeMessage(m);
+                return subject.equals(unchecked(new ThrowingSupplier<Object>() {
+                    @Override
+                    public Object get() throws Throwable {
+                        return mimeMessage.getSubject();
+                    }
+                }));
+            }
+        };
         findFirstOrElseThrow(predicate,
                 assertionError("No message with subject [{0}] found!", subject));
         return this;
     }
 
-    public WiserAssertions withContent(String content) {
-        findFirstOrElseThrow(m -> {
-            ThrowingSupplier<String> contentAsString =
-                    () -> ((String) getMimeMessage(m).getContent()).trim();
-            return content.equals(unchecked(contentAsString));
+    public WiserAssertions withContent(final String content) {
+        findFirstOrElseThrow(new Predicate<WiserMessage>() {
+            @Override
+            public boolean test(final WiserMessage m) {
+                ThrowingSupplier<String> contentAsString =
+                        new ThrowingSupplier<String>() {
+                            @Override
+                            public String get() throws Throwable {
+                                return ((String) WiserAssertions.this.getMimeMessage(m).getContent()).trim();
+                            }
+                        };
+                return content.equals(unchecked(contentAsString));
+            }
         }, assertionError("No message with content [{0}] found!", content));
         return this;
     }
@@ -57,12 +85,22 @@ public class WiserAssertions {
                 .findFirst().orElseThrow(exceptionSupplier);
     }
 
-    private MimeMessage getMimeMessage(WiserMessage wiserMessage) {
-        return unchecked(wiserMessage::getMimeMessage);
+    private MimeMessage getMimeMessage(final WiserMessage wiserMessage) {
+        return unchecked((ThrowingSupplier<MimeMessage>) new ThrowingSupplier<MimeMessage>() {
+            @Override
+            public MimeMessage get() throws Throwable {
+                return wiserMessage.getMimeMessage();
+            }
+        });
     }
 
-    private static Supplier<AssertionError> assertionError(String errorMessage, String... args) {
-        return () -> new AssertionError(MessageFormat.format(errorMessage, args));
+    private static Supplier<AssertionError> assertionError(final String errorMessage, final String... args) {
+        return new Supplier<AssertionError>() {
+            @Override
+            public AssertionError get() {
+                return new AssertionError(MessageFormat.format(errorMessage, args));
+            }
+        };
     }
 
     public static <T> T unchecked(ThrowingSupplier<T> supplier) {

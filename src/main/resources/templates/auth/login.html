@@ -10,12 +10,16 @@
 <div layout:fragment="content"
      class="container">
     <div th:if="${param.error}">
-        아이디나 패스워드가 정확하지 않습니다.
+        사용자가 존재하지 않거나, 아이디나 패스워드가 정확하지 않습니다.
     </div>
     <form th:action="@{/auth/login}" method="post">
         <div><label> User Name : <input type="text" name="username"/> </label></div>
         <div><label> Password: <input type="password" name="password"/> </label></div>
-        <div><input type="submit" value="Sign In"/></div>
+
+        <div>
+            <input type="hidden" name="remember-me" value="true" />
+            <input type="submit" value="Sign In"/>
+        </div>
     </form>
 </div>
 </body>

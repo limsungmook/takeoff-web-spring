@@ -14,6 +14,11 @@ import java.util.Date;
 @Data
 public class AuthToken {
 
+
+    private AuthToken(){};
+
+    public static final int EXPIRE_HOUR = 3;        // 토근 유효 시간 : 3시간.
+
     /**
      * http://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string
      */
