@@ -2,7 +2,6 @@ package com.sungmook.config;
 
 import com.sungmook.domain.SessionUser;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
@@ -13,12 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.templateresolver.TemplateResolver;
 
-import javax.annotation.PostConstruct;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -29,19 +23,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private TemplateResolver templateResolver;
-
-    @Autowired
-    private TemplateEngine templateEngine;
-
-    @PostConstruct
-    public void init(){
-        HashSet sets = new HashSet();
-        sets.add(new SpringSecurityDialect());
-        templateEngine.setAdditionalDialects(sets);
-    }
-
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -49,6 +30,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         super.addArgumentResolvers(argumentResolvers);
     }
 
+    /**
+     * 파라미터에 SessionUser 가 존재하면 SecurityContext 를 뒤져 바인딩한다.
+     * @return
+     */
     @Bean
     public HandlerMethodArgumentResolver sessionUserArgumentResolver() {
         return new HandlerMethodArgumentResolver() {

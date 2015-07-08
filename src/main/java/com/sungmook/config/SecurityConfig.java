@@ -18,13 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SuppressWarnings("unused")
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-//        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-//        filter.setEncoding("UTF-8");
-//        filter.setForceEncoding(true);
-//        http.addFilterBefore(filter, CsrfFilter.class);
 
         http
                 .headers()
@@ -33,7 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/users", "/admin").hasRole("ADMIN")
-//                .anyRequest().authenticated();
                 .anyRequest().permitAll();
         http
                 .formLogin()
@@ -49,7 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
-                .rememberMe();
+                .rememberMe()
+                .rememberMeParameter("takeoff-remember-me")
+                .tokenValiditySeconds(31536000);
 
 
     }

@@ -37,8 +37,6 @@ public class MailConfig {
     private String username;
     @Value("${spring.mail.password}")
     private String password;
-//    @Value("${spring.mail.properties}")
-//    private Map<String, String> properties;
 
 
     @Bean
@@ -46,9 +44,6 @@ public class MailConfig {
 
         username = environment.getProperty("TAKEOFF_MAIL_USERNAME", username);
         password = environment.getProperty("TAKEOFF_MAIL_PASSWORD", password);
-
-        logger.debug("email username : {}", username);
-        logger.debug("email password : {}", password);
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties mailProperties = new Properties();
@@ -71,10 +66,10 @@ public class MailConfig {
 
             int tlsPort = environment.getProperty("spring.mail.properties.mail.smtp.socketFactory.port", Integer.class, 445);
             mailProperties.put("mail.smtp.socketFactory.port", tlsPort);
-//
+
             String tlsClass = environment.getProperty("spring.mail.properties.mail.smtp.socketFactory.class", String.class, "javax.net.ssl.SSLSocketFactory");
             mailProperties.put("mail.smtp.socketFactory.class", tlsClass);
-//
+
             boolean tlsFallback = environment.getProperty("spring.mail.properties.mail.smtp.socketFactory.fallback", Boolean.class, false);
             mailProperties.put("mail.smtp.socketFactory.fallback", tlsFallback);
 

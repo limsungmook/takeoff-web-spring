@@ -26,25 +26,10 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-//
-//    @Bean
-//    public HttpMessageConverter<String> responseBodyConverter() {
-//        return new StringHttpMessageConverter(Charset.forName("UTF-8"));
-//    }
-//
-//    @Bean
-//    @Order(Ordered.HIGHEST_PRECEDENCE)
-//    CharacterEncodingFilter characterEncodingFilter() {
-//        CharacterEncodingFilter filter = new CharacterEncodingFilter();
-//        filter.setEncoding("UTF-8");
-//        filter.setForceEncoding(true);
-//        return filter;
-//    }
-
-
     // After Start
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+
 
     @Autowired
     private MemberRepository memberRepository;
@@ -69,9 +54,10 @@ public class Application {
          * 관리자 계정 Init
          * admin/admin
          */
-        if( memberRepository.findByUsername("admin") == null ){
+        String adminUsername = "admin@takeoff.com";
+        if( memberRepository.findByUsername(adminUsername) == null ){
             SignupMember admin = new SignupMember();
-            admin.setUsername("admin@sungmook.com");
+            admin.setUsername(adminUsername);
             admin.setPassword("admin");
 
             admin
