@@ -35,9 +35,6 @@ public class AuthController {
     @GetOutLoginUser
     @RequestMapping("/auth/login")
     public String login(SessionUser sessionUser) throws BadHttpRequest {
-
-        logger.debug("sessionUser : {}", sessionUser);
-
         return "/auth/login";
     }
 

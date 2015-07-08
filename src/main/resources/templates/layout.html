@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Layout</title>
     <link rel="stylesheet"
@@ -12,10 +12,6 @@
 <div class="container">
     <div class="navbar">
         <div class="navbar-inner">
-            <a class="brand"
-               href="https://github.com/ultraq/thymeleaf-layout-dialect">
-                Thymeleaf - Layout
-            </a>
             <ul class="nav">
                 <li>
                     <a th:href="@{/}" href="/">
@@ -23,11 +19,20 @@
                     </a>
                 </li>
                 <li>
-                    <span sec:authentication="username">fake@gmail.com</span>
+
+                    <!--Logged user: <span sec:authentication="name">Bob</span>-->
+                    <div sec:authorize="isAuthenticated()">
+                        <span sec:authentication="principal.username">fake@gmail.com</span>
+                    </div>
                 </li>
                 <li>
-                    <a href="/auth/signup">회원가입</a>
-                    <a href="/auth/login">로그인</a>
+                    <div sec:authorize="!isAuthenticated()">
+                        <a href="/auth/signup">회원가입</a>
+                        <a href="/auth/login">로그인</a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <a href="/auth/logout">로그아웃</a>
+                    </div>
                 </li>
             </ul>
         </div>

@@ -42,7 +42,7 @@ public class GetOutLoginUserAdvice {
 
         }
 
-        throw new NotFoundException("잘못된 접근입니다.");
+        throw new NotFoundException("이미 로그인 된 사용자입니다.");
     }
 
 }
