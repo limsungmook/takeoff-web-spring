@@ -23,7 +23,7 @@ public class Role implements GrantedAuthority {
      * DB 에 자동으로 추가됨
      **/
     public enum Value {
-        ADMIN, USER, INACTIVE_USER
+        ADMIN, USER, SOCIAL, INACTIVE_USER
     }
 
     private Role(){}

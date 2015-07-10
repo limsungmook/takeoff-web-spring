@@ -4,6 +4,7 @@ import com.sungmook.domain.Member;
 import com.sungmook.domain.SessionUser;
 import com.sungmook.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +31,27 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("아이디를 찾을 수 없습니다.");
         }
 
-        return new SessionUser(member.getUsername(), member.getEncryptedPassword(), member.getRoles());
+        return wrapAndReturn( new SessionUser(member.getUsername(), member.getEncryptedPassword(), member.getRoles()), member );
+    }
+
+    public UserDetails loadUserByUserId( Long userId ) throws UsernameNotFoundException, DataAccessException {
+        Member member = memberRepository.findById(userId);
+
+        if( member == null ){
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+        }
+
+        return wrapAndReturn( new SessionUser(member.getUsername(), member.getEncryptedPassword(), member.getRoles()), member );
+    }
+
+    /**
+     * 세션에 필요한 데이터들을 넣는다.
+     * @param sessionUser
+     * @param member
+     * @return
+     */
+    private UserDetails wrapAndReturn(SessionUser sessionUser, Member member){
+        sessionUser.setMemberId( member.getId() );
+        return sessionUser;
     }
 }

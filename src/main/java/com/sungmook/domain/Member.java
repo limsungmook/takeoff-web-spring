@@ -20,6 +20,16 @@ import java.util.Set;
 @Data
 public class Member {
 
+
+    /**
+     * SignupMember, SocialSignupMember 등의 자식들만 생성할 수 있음.
+     */
+    public Member(){}
+
+    public Member(Long id){
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
@@ -28,6 +38,10 @@ public class Member {
     @NotNull
     @Size(max=255)
     private String username;
+
+    private String name;
+
+    private String profilePic;
 
     private String encryptedPassword;
 

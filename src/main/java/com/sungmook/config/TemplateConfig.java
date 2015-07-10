@@ -18,6 +18,9 @@ public class TemplateConfig {
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
 
+    /**
+     * /templates 경로를 바꾸고 싶다면 TemplateResolver Bean 설정
+     */
     @Autowired
     private TemplateResolver templateResolver;
 

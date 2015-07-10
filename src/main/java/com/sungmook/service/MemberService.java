@@ -23,6 +23,11 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     @Transactional
+    public void socialInstantSignup(Member member){
+        memberRepository.save(member);
+    }
+
+    @Transactional
     public void signup(Member member){
         memberRepository.save(member);
 
