@@ -1,14 +1,20 @@
 package com.sungmook.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
@@ -18,6 +24,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SuppressWarnings("unused")
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public RememberMeServices rememberMeServices(){
+        return new TokenBasedRememberMeServices("takeoff-remember-me", userDetailsService);
+    }
+
+    @Bean
+    public TextEncryptor textEncryptor() {
+        return Encryptors.noOpText();
+    }
+
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/css/**", "/**/*.png", "/**/*.gif", "/**/*.jpg", "/**/*.ico");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
+                .antMatchers("/connect").hasRole("USER")
                 .antMatchers("/users", "/admin").hasRole("ADMIN")
                 .anyRequest().permitAll();
         http

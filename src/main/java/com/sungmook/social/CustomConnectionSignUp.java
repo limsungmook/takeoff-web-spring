@@ -8,6 +8,7 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
@@ -22,11 +23,11 @@ public class CustomConnectionSignUp implements ConnectionSignUp {
      * takeoff 는 소셜 로그인/가입 버튼을 눌렀을 때 만약 로컬에 계정이 존재하지 않으면
      * 임의의 아이디로 가입한 뒤 서비스를 이용할 수 있게 해준다.
      *
-     * 여기서 추가로 가입이 완료된 뒤 로그인 해 주는 작업이 필요할까?
      * @param connection
      * @return
      */
     @Override
+    @Transactional
     public String execute(Connection<?> connection) {
         ConnectionData data = connection.createData();
         Member member = new SocialSignupMember().buildMember();

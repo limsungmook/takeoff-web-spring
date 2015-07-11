@@ -2,11 +2,11 @@ package com.sungmook.social;
 
 import com.sungmook.domain.Member;
 import com.sungmook.repository.SocialUserConnectionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.social.connect.*;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -17,28 +17,34 @@ import java.util.List;
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
-@Component
 public class ConnectionRepositoryImpl implements ConnectionRepository{
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Long memberId;
 
-    @Autowired
     private ConnectionFactoryLocator connectionFactoryLocator;
 
-    @Autowired
     private SocialUserConnectionRepository socialUserConnectionRepository;
 
-    @Autowired
     private TextEncryptor textEncryptor;
 
-    public ConnectionRepositoryImpl(Long memberId) {
+    public ConnectionRepositoryImpl(){
+        logger.debug("커넥트레포지토리 기본 생성자");
+    }
+
+    public ConnectionRepositoryImpl(Long memberId, ConnectionFactoryLocator connectionFactoryLocator, SocialUserConnectionRepository socialUserConnectionRepository, TextEncryptor textEncryptor) {
+        logger.debug("커넥트레포지토리 멤버 생성자");
         this.memberId = memberId;
+        this.connectionFactoryLocator = connectionFactoryLocator;
+        this.socialUserConnectionRepository = socialUserConnectionRepository;
+        this.textEncryptor = textEncryptor;
     }
 
     @Override
     public MultiValueMap<String, Connection<?>> findAllConnections() {
 
-        List<SocialUserConnection> socialUserConnections = socialUserConnectionRepository.findByMemberIdOrderByProviderIdAndRank(memberId);
+        List<SocialUserConnection> socialUserConnections = socialUserConnectionRepository.findByMemberIdOrderByProviderIdAscRankAsc(memberId);
 
         List<Connection<?>> resultList = connectionMapper.mapEntities( socialUserConnections );
         MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<String, Connection<?>>();
@@ -104,7 +110,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
     @Transactional(readOnly = true )
     private Connection<?> findPrimaryConnection(String providerId) {
-        List<Connection<?>> connections = connectionMapper.mapEntities(socialUserConnectionRepository.findByUserIdAndProviderIdAndRank(memberId, providerId, 1));
+        List<Connection<?>> connections = connectionMapper.mapEntities(socialUserConnectionRepository.findByMemberIdAndProviderIdAndRank(memberId, providerId, 1));
         if (connections.size() > 0) {
             return connections.get(0);
         } else {
@@ -113,9 +119,10 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
     }
 
     @Override
+    @Transactional
     public void addConnection(Connection<?> connection) {
         ConnectionData data = connection.createData();
-        List<Long> connIds = socialUserConnectionRepository.findIdByProviderIdNProviderUserId(data.getProviderId(), data.getProviderUserId());
+        List<Long> connIds = socialUserConnectionRepository.findIdByProviderIdAndProviderUserId(data.getProviderId(), data.getProviderUserId());
 
         if( connIds != null && connIds.size() > 0 ){
             removeConnections(data.getProviderId());

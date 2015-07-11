@@ -24,7 +24,9 @@ public class MemberService {
 
     @Transactional
     public void socialInstantSignup(Member member){
+        member.setUsername("tmp@tmp.com");
         memberRepository.save(member);
+        member.setUsername(member.getId() + "@" + "takeoff.social");
     }
 
     @Transactional

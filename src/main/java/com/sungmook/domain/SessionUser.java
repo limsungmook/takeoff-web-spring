@@ -18,5 +18,8 @@ public class SessionUser extends User {
     }
 
     private Long memberId;
+    private String name;
+    private String profilePic;
+    private boolean admin;
 
 }

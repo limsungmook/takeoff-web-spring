@@ -23,6 +23,12 @@
                     <!--Logged user: <span sec:authentication="name">Bob</span>-->
                     <div sec:authorize="isAuthenticated()">
                         <span sec:authentication="principal.username">fake@gmail.com</span>
+                        <form name="fb_signin" id="fb_signin" th:action="@{/connect/facebook}" method="POST">
+                            <!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>-->
+                            <input type="hidden" name="scope" value="email" />
+                            <button type="submit">연결하기</button>
+                        </form>
+
                     </div>
                 </li>
                 <li>

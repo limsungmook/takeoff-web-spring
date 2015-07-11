@@ -9,7 +9,7 @@
 
 <div layout:fragment="content"
      class="container">
-    <div th:if="${param.error}">
+    <div th:if="${#httpServletRequest.getParameter('error')}">
         사용자가 존재하지 않거나, 아이디나 패스워드가 정확하지 않습니다.
     </div>
     <form th:action="@{/auth/login}" method="post">
@@ -22,6 +22,14 @@
         </div>
     </form>
     <a href="/auth/find_password">비밀번호 찾기</a>
+
+    <!-- FACEBOOK SIGNIN -->
+    <form name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}" method="POST">
+        <!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>-->
+        <input type="hidden" name="scope" value="email" />
+        <button type="submit"><img th:src="@{/signin/facebook/sign-in-with-facebook.png}" /></button>
+    </form>
+
 </div>
 </body>
 </html>

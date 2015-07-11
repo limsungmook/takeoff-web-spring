@@ -34,6 +34,9 @@ public class Member {
     @GeneratedValue
     private Long id;
 
+    /**
+     * 로그인에 사용되는 필드
+     */
     @Email
     @NotNull
     @Size(max=255)

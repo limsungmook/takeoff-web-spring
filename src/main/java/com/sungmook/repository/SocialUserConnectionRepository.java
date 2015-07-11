@@ -11,21 +11,23 @@ import java.util.Set;
  */
 public interface SocialUserConnectionRepository extends JpaRepository<SocialUserConnection, Long>{
 
-    List<Long> findMemberIdByProviderIdAndProviderUserId(String providerId, String providerUserId);
+    List<Long> getMemberIdByProviderIdAndProviderUserId(String providerId, String providerUserId);
 
     List<Long> findMemberIdByProviderIdAndProviderUserIdIn(String providerId, Set<String> providerUserIds);
 
-    List<SocialUserConnection> findByMemberIdOrderByProviderIdAndRank(Long memberId);
+//    List<SocialUserConnection> findByMemberIdOrderByProviderIdAscAndRankAsc(Long memberId);
 
     List<SocialUserConnection> findByMemberIdAndProviderIdOrderByRank(Long memberId, String providerId);
 
     SocialUserConnection findByMemberIdAndProviderIdAndProviderUserId(Long memberId, String providerId, String providerUserId);
 
-    List<SocialUserConnection> findByUserIdAndProviderIdAndRank(Long memberId, String providerId, int rank);
+    List<SocialUserConnection> findByMemberIdAndProviderIdAndRank(Long memberId, String providerId, Integer rank);
 
-    List<Long> findIdByProviderIdNProviderUserId(String providerId, String providerUserId);
+    List<Long> findIdByProviderIdAndProviderUserId(String providerId, String providerUserId);
 
     Integer findTopRankByMemberIdAndProviderId(Long memberId, String providerId);
 
     List<SocialUserConnection> findByMemberIdAndProviderId(Long memberId, String providerId);
+
+    List<SocialUserConnection> findByMemberIdOrderByProviderIdAscRankAsc(Long memberId);
 }
