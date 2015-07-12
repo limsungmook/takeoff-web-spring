@@ -32,6 +32,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 파라미터에 SessionUser 가 존재하면 SecurityContext 를 뒤져 바인딩한다.
+     * @CurrentUser 어노테이션을 사용한 방법이 좋을지, 아니면 묵시적으로 파라미터 타입만 보고 리졸빙 하는 방식이 좋을지는 고민이 필요할 듯 하다.
      * @return
      */
     @Bean
