@@ -3,7 +3,6 @@ package com.sungmook.domain;
 import com.sungmook.domain.validation.constrant.NoDuplicatedUsername;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * 회원가입 처리 클래스
@@ -51,8 +50,7 @@ public class SignupMember extends Member {
 
     public void setPassword(String password){
         this.password = password;
-        String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-        this.setEncryptedPassword(encryptedPassword);
+        this.setEncryptedPasswordFromPassword(password);
     }
 
 }

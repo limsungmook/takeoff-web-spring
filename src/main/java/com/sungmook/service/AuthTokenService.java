@@ -2,8 +2,10 @@ package com.sungmook.service;
 
 import com.sungmook.domain.AuthToken;
 import com.sungmook.domain.Member;
+import com.sungmook.exception.CommonException;
 import com.sungmook.exception.InvalidTokenException;
 import com.sungmook.repository.AuthTokenRepository;
+import com.sungmook.repository.MemberRepository;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,17 +32,36 @@ public class AuthTokenService {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Transactional
     public void generateAndSendMail(AuthToken.Type type, Member member){
         AuthToken authToken = new AuthToken(member);
         authToken.setType(type);
         authTokenRepository.save(authToken);
 
-        mailService.sendSignupConfirmMail(authToken);
+        mailService.sendConfirmMail(authToken);
         
     }
 
     @Transactional
-    public AuthToken confirmAndGet(Long memberId, String token) {
+    public void generateAndSendMail(AuthToken.Type type, String email){
+
+        Member member = memberRepository.findByUsername(email);
+        if( member == null ){
+            throw new CommonException("존재하지 않는 사용자입니다.");
+        }
+        AuthToken authToken = new AuthToken(member);
+        authToken.setType(type);
+        authTokenRepository.save(authToken);
+
+        mailService.sendConfirmMail(authToken);
+
+    }
+
+    @Transactional
+    public AuthToken validAndGet(Long memberId, String token) {
         AuthToken authToken = authTokenRepository.findByToken(token);
 
         // 1. 토큰 없음
@@ -67,6 +88,8 @@ public class AuthTokenService {
         switch (authToken.getType() ){
             case SIGNUP:
                 memberService.confirmSignup(authToken.getMember().getId());
+                authToken.setConfirmDate(new Date());
+                authTokenRepository.save(authToken);
                 break;
             case FIND_PASSWORD:
                 break;
@@ -74,9 +97,25 @@ public class AuthTokenService {
                 throw new InvalidTokenException();
         }
 
-        authToken.setConfirmDate(new Date());
-        authTokenRepository.save(authToken);
-
         return authToken;
+    }
+
+    /**
+     * 1. 토큰을 검증하고
+     * 2. 토큰을 최종적으로 컨펌하고
+     * 3. 패스워드를 변경한다.
+     * @param authTokenId
+     * @param memberId
+     * @param password
+     */
+    @Transactional
+    public void validAndConfirmAndChangePassword(Long authTokenId, Long memberId, String password) {
+        AuthToken authToken = authTokenRepository.findOne(authTokenId);
+        if( !authToken.getMember().getId().equals(memberId) ) {
+            throw new CommonException("토큰의 소유자가 다릅니다.");
+        }
+        Member member = memberRepository.findById(memberId);
+        member.setEncryptedPasswordFromPassword(password);
+        memberRepository.save(member);
     }
 }

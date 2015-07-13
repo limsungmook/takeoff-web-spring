@@ -2,6 +2,7 @@ package com.sungmook.domain;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,7 +55,9 @@ public class Member {
     @ManyToMany
     private Set<Role> roles;
 
-
+    protected void setEncryptedPassword(String encryptedPassword){
+        this.encryptedPassword = encryptedPassword;
+    }
 
     public Member addRole(Role role){
         if( roles == null ) {
@@ -71,6 +74,9 @@ public class Member {
         roles.remove(role);
 
         return this;
+    }
 
+    public void setEncryptedPasswordFromPassword(String password) {
+        this.setEncryptedPassword(new BCryptPasswordEncoder().encode(password));
     }
 }

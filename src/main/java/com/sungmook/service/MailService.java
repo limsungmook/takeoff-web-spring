@@ -2,7 +2,9 @@ package com.sungmook.service;
 
 import com.sungmook.domain.AuthToken;
 import com.sungmook.domain.mail.ConfirmMail;
+import com.sungmook.domain.mail.ResetPasswordConfirmMail;
 import com.sungmook.domain.mail.SignupConfirmMail;
+import com.sungmook.exception.CommonException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,23 @@ public class MailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void sendSignupConfirmMail(final AuthToken authToken) {
+    public void sendConfirmMail(final AuthToken authToken) {
+        ConfirmMail confirmMail = null;
 
-        SignupConfirmMail signupConfirmMail = new SignupConfirmMail(authToken, templateEngine);
+        switch(authToken.getType()){
+            case SIGNUP:
+                confirmMail = new SignupConfirmMail(authToken, templateEngine);
+                break;
 
-        MimeMessagePreparator preparator = getPreparator(signupConfirmMail);
+            case FIND_PASSWORD:
+                confirmMail = new ResetPasswordConfirmMail(authToken, templateEngine);
+                break;
+
+            default:
+                throw new CommonException("지원하지 않는 토큰 타입입니다");
+        }
+
+        MimeMessagePreparator preparator = getPreparator(confirmMail);
 
         try {
             logger.debug("Send mail");
@@ -48,6 +62,7 @@ public class MailService {
             throw new RuntimeException("이메일을 보내는 도중 오류가 발생했습니다.");
         }
     }
+
 
     private MimeMessagePreparator getPreparator(final ConfirmMail confirmMail){
         MimeMessagePreparator preparator = new MimeMessagePreparator() {

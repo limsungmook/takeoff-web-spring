@@ -57,7 +57,7 @@ public class CustomSignInAdapter implements SignInAdapter {
          */
         if( member.getEncryptedPassword() == null ){
             SecureRandom random = new SecureRandom();
-            member.setEncryptedPassword(new BigInteger(130, random).toString(32));
+            member.setEncryptedPasswordFromPassword(new BigInteger(130, random).toString(32));
         }
         SessionUser sessionUser = (SessionUser)userDetailsService.loadUserByUsername(member.getUsername());
         SecurityContext securityContext = SecurityContextHolder.getContext();

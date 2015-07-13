@@ -70,5 +70,15 @@ public class LocalConfig {
                 .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
 
         memberRepository.save(user.buildMember());
+
+        SignupMember sungmook = new SignupMember();
+        sungmook.setUsername("ipes4579@gmail.com");
+        sungmook.setPassword("asdf");
+
+        sungmook
+                .addRole(Role.buildFromValue(Role.Value.USER))
+                .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
+
+        memberRepository.save(sungmook.buildMember());
     }
 }

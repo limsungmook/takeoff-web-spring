@@ -1,9 +1,11 @@
 package com.sungmook.controller.web;
 
 import com.sungmook.aop.annotation.GetOutLoginUser;
+import com.sungmook.domain.AuthToken;
 import com.sungmook.domain.SessionUser;
 import com.sungmook.domain.SignupMember;
 import com.sungmook.helper.MessageHelper;
+import com.sungmook.service.AuthTokenService;
 import com.sungmook.service.MemberService;
 import javassist.tools.web.BadHttpRequest;
 import org.slf4j.Logger;
@@ -14,8 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
@@ -31,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private AuthTokenService authTokenService;
 
     @GetOutLoginUser
     @RequestMapping("/auth/login")
@@ -68,6 +78,28 @@ public class AuthController {
     @RequestMapping(path="/auth/signup_success", method = RequestMethod.GET)
     public String signupSuccess(){
         return "/auth/signup_success";
+    }
+
+    @GetOutLoginUser
+    @RequestMapping(path="/auth/find_password", method = RequestMethod.GET)
+    public String findPassword(){
+        return "/auth/find_password";
+    }
+
+    @GetOutLoginUser
+    @RequestMapping(path="/auth/find_password", method = RequestMethod.POST)
+    public String findPassword(String email,
+                               HttpServletRequest request,
+                               RedirectAttributes redirectAttributes){
+        authTokenService.generateAndSendMail(AuthToken.Type.FIND_PASSWORD, email);
+        redirectAttributes.addAttribute("email", email);
+
+        return "redirect:/auth/sent_reset_password";
+    }
+    @GetOutLoginUser
+    @RequestMapping(path="/auth/sent_reset_password", method = RequestMethod.GET)
+    public String sentResetPassword(HttpServletRequest request){
+        return "/auth/sent_reset_password";
     }
 
 }
