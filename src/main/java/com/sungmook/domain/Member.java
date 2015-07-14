@@ -2,15 +2,15 @@ package com.sungmook.domain;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +25,8 @@ public class Member {
     /**
      * SignupMember, SocialSignupMember 등의 자식들만 생성할 수 있음.
      */
-    public Member(){}
+    public Member(){
+    }
 
     public Member(Long id){
         this.id = id;
@@ -48,6 +49,12 @@ public class Member {
     private String profilePic;
 
     private String encryptedPassword;
+
+    @CreatedDate
+    private Date createdDate;
+
+    @OneToMany
+    private List<Content> contents;
 
     private boolean admin;
 

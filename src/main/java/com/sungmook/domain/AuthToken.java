@@ -1,6 +1,7 @@
 package com.sungmook.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -14,6 +15,9 @@ import java.util.Date;
 @Data
 public class AuthToken {
 
+    public enum Type {
+        SIGNUP, FIND_PASSWORD
+    }
 
     private AuthToken(){};
 
@@ -30,10 +34,6 @@ public class AuthToken {
         this.member = member;
     }
 
-    public enum Type {
-        SIGNUP, FIND_PASSWORD
-    }
-
     @Id
     @GeneratedValue
     private Long id;
@@ -46,6 +46,7 @@ public class AuthToken {
 
     private String token;
 
+    @CreatedDate
     private Date createdDate;
 
     private Date confirmDate;

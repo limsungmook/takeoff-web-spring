@@ -9,7 +9,29 @@
 <h1 layout:fragment="header">Messages : Create</h1>
 <div layout:fragment="content"
      class="container">
-    Content
+    <table>
+        <tr>
+            <th>title</th>
+            <th>rawText</th>
+            <th>member</th>
+        </tr>
+
+        <tr th:each="story : ${pagedStories.content}">
+            <td>
+                <a th:href="@{/story/{id}(id=${story.id})}" href="/story/1">
+                    <span th:text="${story.title}">Onions</span>
+                </a>
+            </td>
+            <td th:text="${story.rawText}">2.41</td>
+            <td th:text="${story.createdDate}">yes</td>
+        </tr>
+        <!--<tr th:each="prod : ${pagedStories.}">-->
+            <!--<td th:text="${prod.name}">Onions</td>-->
+            <!--<td th:text="${prod.price}">2.41</td>-->
+            <!--<td th:text="${prod.inStock}? #{true} : #{false}">yes</td>-->
+        <!--</tr>-->
+    </table>
+
 </div>
 </body>
 </html>

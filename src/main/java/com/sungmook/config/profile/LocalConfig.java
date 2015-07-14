@@ -2,8 +2,10 @@ package com.sungmook.config.profile;
 
 import com.sungmook.domain.Role;
 import com.sungmook.domain.SignupMember;
+import com.sungmook.domain.Story;
 import com.sungmook.repository.MemberRepository;
 import com.sungmook.repository.RoleRepository;
+import com.sungmook.service.StoryService;
 import org.h2.server.web.WebServlet;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class LocalConfig {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private StoryService storyService;
 
     /**
      * h2 Memory DB 의 콘솔을 열어준다.
@@ -80,5 +85,10 @@ public class LocalConfig {
                 .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
 
         memberRepository.save(sungmook.buildMember());
+
+        Story story = new Story();
+        story.setTitle("테스트 타이틀");
+        story.setRawText("테스트 텍스트");
+        storyService.save(story);
     }
 }

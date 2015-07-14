@@ -32,6 +32,11 @@
                     </div>
                 </li>
                 <li>
+                    <div sec:authorize="isAuthenticated()">
+                        <a href="/story/write">글 쓰기</a>
+                    </div>
+                </li>
+                <li>
                     <div sec:authorize="!isAuthenticated()">
                         <a href="/auth/signup">회원가입</a>
                         <a href="/auth/login">로그인</a>
