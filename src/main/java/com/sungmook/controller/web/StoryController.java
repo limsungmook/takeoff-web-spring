@@ -47,7 +47,7 @@ public class StoryController{
 
     @RequestMapping(path = "/story/{id}", method = RequestMethod.GET)
     public String view(@PathVariable Long id, Model model, Comment comment){
-        model.addAttribute("story", storyService.findById(id));
+        model.addAttribute("story", storyService.readAndFindById(id));
 
         Page<Comment> pagedComments= commentRepository.findAll(new PageRequest(0, 20, Sort.Direction.DESC, "createdDate"));
         model.addAttribute("pagedComments", pagedComments);

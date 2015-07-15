@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
@@ -48,6 +49,8 @@ public abstract class Content {
 
     private String title;
 
+    private int readCount;
+
     @Type(type="text")
     private String rawText;
 
@@ -57,6 +60,9 @@ public abstract class Content {
     @CreatedBy
     @ManyToOne
     private Member member;
+
+    @OneToMany(mappedBy = "content")
+    private List<ContentReadUser> contentReadUser;
 
 
 }
