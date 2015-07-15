@@ -1,4 +1,4 @@
-package com.sungmook.domain;
+package com.sungmook.security;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

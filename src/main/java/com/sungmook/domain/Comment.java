@@ -4,9 +4,8 @@ import lombok.Data;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import java.util.List;
 
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
@@ -14,10 +13,10 @@ import java.util.List;
 @Data
 @Entity
 @PrimaryKeyJoinColumn(name="id")
-@DiscriminatorValue(value=Content.Discriminator.STORY_STRING)
-public class Story extends Content{
+@DiscriminatorValue(value=Content.Discriminator.COMMENT_STRING)
+public class Comment extends Content{
 
-    @OneToMany(mappedBy="story")
-    private List<Comment> comments;
 
+    @ManyToOne
+    private Story story;
 }

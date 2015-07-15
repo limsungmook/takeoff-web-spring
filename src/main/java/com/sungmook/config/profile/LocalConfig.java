@@ -5,6 +5,7 @@ import com.sungmook.domain.SignupMember;
 import com.sungmook.domain.Story;
 import com.sungmook.repository.MemberRepository;
 import com.sungmook.repository.RoleRepository;
+import com.sungmook.security.LoginHelper;
 import com.sungmook.service.StoryService;
 import org.h2.server.web.WebServlet;
 import org.slf4j.Logger;
@@ -38,6 +39,9 @@ public class LocalConfig {
 
     @Autowired
     private StoryService storyService;
+
+    @Autowired
+    private LoginHelper loginHelper;
 
     /**
      * h2 Memory DB 의 콘솔을 열어준다.
@@ -76,6 +80,16 @@ public class LocalConfig {
 
         memberRepository.save(user.buildMember());
 
+        loginHelper.login(user.getUsername());
+
+        for(int i = 0; i < 5; i++){
+            // 테스트 스토리들 등록
+            Story story = new Story();
+            story.setTitle("asdf 의 글");
+            story.setRawText("asdf의  텍스트");
+            storyService.save(story);
+        }
+
         SignupMember sungmook = new SignupMember();
         sungmook.setUsername("ipes4579@gmail.com");
         sungmook.setPassword("asdf");
@@ -86,9 +100,14 @@ public class LocalConfig {
 
         memberRepository.save(sungmook.buildMember());
 
-        Story story = new Story();
-        story.setTitle("테스트 타이틀");
-        story.setRawText("테스트 텍스트");
-        storyService.save(story);
+        loginHelper.login(sungmook.getUsername());
+
+        for(int i = 0; i < 6; i++){
+            // 테스트 스토리들 등록
+            Story story = new Story();
+            story.setTitle("테스트 타이틀");
+            story.setRawText("테스트 텍스트");
+            storyService.save(story);
+        }
     }
 }

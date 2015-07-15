@@ -1,11 +1,19 @@
 package com.sungmook.controller.web;
 
+import com.sungmook.domain.Comment;
 import com.sungmook.domain.Story;
+import com.sungmook.repository.CommentRepository;
+import com.sungmook.service.CommentService;
 import com.sungmook.service.StoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,6 +28,12 @@ public class StoryController{
     @Autowired
     private StoryService storyService;
 
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
     @RequestMapping(path = "/story/write", method = RequestMethod.GET)
     public String form(Story story){
         return "/story/write";
@@ -31,5 +45,19 @@ public class StoryController{
         return "redirect:/";
     }
 
+    @RequestMapping(path = "/story/{id}", method = RequestMethod.GET)
+    public String view(@PathVariable Long id, Model model, Comment comment){
+        model.addAttribute("story", storyService.findById(id));
+
+        Page<Comment> pagedComments= commentRepository.findAll(new PageRequest(0, 20, Sort.Direction.DESC, "createdDate"));
+        model.addAttribute("pagedComments", pagedComments);
+        return "/story/view";
+    }
+
+    @RequestMapping(path = "/story/{id}/comment", method = RequestMethod.POST)
+    public String writeComment(@PathVariable Long id, Comment comment, Model model){
+        commentService.save(comment);
+        return "redirect:/story/" + id;
+    }
 
 }

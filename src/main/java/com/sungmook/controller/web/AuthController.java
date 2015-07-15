@@ -2,7 +2,7 @@ package com.sungmook.controller.web;
 
 import com.sungmook.aop.annotation.GetOutLoginUser;
 import com.sungmook.domain.AuthToken;
-import com.sungmook.domain.SessionUser;
+import com.sungmook.security.SessionUser;
 import com.sungmook.domain.SignupMember;
 import com.sungmook.helper.MessageHelper;
 import com.sungmook.service.AuthTokenService;
@@ -16,13 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Map;
 
 /**
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).

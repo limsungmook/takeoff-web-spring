@@ -1,7 +1,7 @@
 package com.sungmook.social;
 
 import com.sungmook.domain.Member;
-import com.sungmook.domain.SessionUser;
+import com.sungmook.security.SessionUser;
 import com.sungmook.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

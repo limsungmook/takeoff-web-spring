@@ -1,7 +1,7 @@
-package com.sungmook.service;
+package com.sungmook.security;
 
 import com.sungmook.domain.Member;
-import com.sungmook.domain.SessionUser;
+import com.sungmook.security.SessionUser;
 import com.sungmook.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

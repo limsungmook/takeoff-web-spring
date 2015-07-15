@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>story : View</title>
+</head>
+<body>
+<h1 layout:fragment="header">Story : View</h1>
+<div layout:fragment="content"
+     class="container">
+
+
+    <h2 th:text="${story.title}">타이틀입니다</h2>
+    <p th:text="${story.rawText}">내용입니다.</p>
+
+    <hr />
+    <h3>코맨트</h3>
+    <form th:action="@{/story/{id}/comment(id=${story.id})}"
+          th:object="${comment}"
+          action="#"
+          method="post">
+        <div th:if="${#fields.hasErrors('*')}"
+             class="alert alert-error">
+            <p th:each="error : ${#fields.errors('*')}"
+               th:text="${error}">
+                Validation error
+            </p>
+        </div>
+        <label >Title</label>
+        <input
+                type="text"
+                th:field="*{rawText}"
+                th:class="${#fields.hasErrors('rawText')} ? 'field-error'"/>
+        <div class="form-actions">
+            <input type="hidden" name="story.id" th:value="${story.id}" />
+            <input type="submit" value="Create"/>
+        </div>
+    </form>
+
+    <hr />
+    <h3>코멘트 리스트</h3>
+    <li th:each="comment : ${pagedComments.content}">
+        <span th:text="${comment.rawText}">2.41</span>
+        <span th:text="${comment.createdDate}">yes</span>
+    </li>
+</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.sungmook.config;
 
-import com.sungmook.domain.SessionUser;
+import com.sungmook.security.SessionUser;
 import com.sungmook.social.CustomSignInAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

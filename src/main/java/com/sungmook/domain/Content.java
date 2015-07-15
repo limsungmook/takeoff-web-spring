@@ -26,6 +26,7 @@ public abstract class Content {
 
         public static final String STORY_STRING="STORY";
         public static final String CONTENT_STRING="CONTENT";
+        public static final String COMMENT_STRING="COMMENT";
     }
 
     protected Content(){

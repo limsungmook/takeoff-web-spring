@@ -1,7 +1,7 @@
 package com.sungmook.config;
 
 import com.sungmook.domain.Member;
-import com.sungmook.domain.SessionUser;
+import com.sungmook.security.SessionUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
