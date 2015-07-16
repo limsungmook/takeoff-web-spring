@@ -2,10 +2,7 @@ package com.sungmook.domain;
 
 import lombok.Data;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -17,7 +14,16 @@ import java.util.List;
 @DiscriminatorValue(value=Content.Discriminator.STORY_STRING)
 public class Story extends Content{
 
+    public Story(){
+        super();
+        this.scope = new Scope(Scope.Type.GLOBAL);
+        scope.setId((long) Scope.Type.GLOBAL.ordinal() + 1);
+    }
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private Scope scope;
+
     @OneToMany(mappedBy="story")
-    private List<Comment> comments;
+    private List<Comment> commentList;
 
 }

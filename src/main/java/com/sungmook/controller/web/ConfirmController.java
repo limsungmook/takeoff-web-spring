@@ -4,7 +4,7 @@ import com.sungmook.domain.AuthToken;
 import com.sungmook.exception.CommonException;
 import com.sungmook.exception.InvalidTokenException;
 import com.sungmook.service.AuthTokenService;
-import com.sungmook.service.MemberService;
+import com.sungmook.service.UserService;
 import javassist.tools.web.BadHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class ConfirmController {
     private AuthTokenService authTokenService;
 
     @Autowired
-    private MemberService memberService;
+    private UserService userService;
 
     @RequestMapping("/confirm")
     public String confirm(

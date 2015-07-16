@@ -8,9 +8,9 @@ import lombok.Data;
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
 @Data
-public class SocialSignupMember extends Member {
+public class SocialSignupUser extends User {
 
-    public SocialSignupMember() {
+    public SocialSignupUser() {
         this
             .addRole(Role.buildFromValue(Role.Value.SOCIAL))
             .addRole(Role.buildFromValue(Role.Value.USER));
@@ -27,11 +27,11 @@ public class SocialSignupMember extends Member {
      * @return
      * 새롭게 생성된 Member 인스턴스
      */
-    public Member buildMember(){
-        Member member = new Member();
-        member.setUsername(super.getUsername());
-        member.setEncryptedPassword(super.getEncryptedPassword());
-        member.setRoles(super.getRoles());
-        return member;
+    public User buildMember(){
+        User user = new User();
+        user.setUsername(super.getUsername());
+        user.setEncryptedPassword(super.getEncryptedPassword());
+        user.setRoles(super.getRoles());
+        return user;
     }
 }

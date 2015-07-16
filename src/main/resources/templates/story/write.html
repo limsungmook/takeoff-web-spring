@@ -21,6 +21,14 @@
                     Validation error
                 </p>
             </div>
+            <div>
+                <select th:field="*{scope}">
+                    <option th:each="scopeEach : ${scopes}"
+                            th:value="${scopeEach.id}"
+                            th:text="${scopeEach.name}">name</option>
+                </select>
+            </div>
+
             <label >Title</label>
             <input type="text"
                    th:field="*{title}"

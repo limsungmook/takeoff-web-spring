@@ -66,7 +66,7 @@ public class SocialConfig  {
                         return null;
                     }
                     SessionUser sessionUser = (SessionUser) principal;
-                    return String.valueOf(sessionUser.getMemberId());
+                    return String.valueOf(sessionUser.getUserId());
                 }
             };
         }

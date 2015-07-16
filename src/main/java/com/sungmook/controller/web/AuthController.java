@@ -3,10 +3,10 @@ package com.sungmook.controller.web;
 import com.sungmook.aop.annotation.GetOutLoginUser;
 import com.sungmook.domain.AuthToken;
 import com.sungmook.security.SessionUser;
-import com.sungmook.domain.SignupMember;
+import com.sungmook.domain.SignupUser;
 import com.sungmook.helper.MessageHelper;
 import com.sungmook.service.AuthTokenService;
-import com.sungmook.service.MemberService;
+import com.sungmook.service.UserService;
 import javassist.tools.web.BadHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class AuthController {
 
 
     @Autowired
-    private MemberService memberService;
+    private UserService userService;
 
     @Autowired
     private AuthTokenService authTokenService;
@@ -47,14 +47,14 @@ public class AuthController {
 
     @PreAuthorize("isAnonymous()")
     @RequestMapping(path="/auth/signup", method = RequestMethod.GET)
-    public String signup(SignupMember signupMember) throws BadHttpRequest {
+    public String signup(SignupUser signupMember) throws BadHttpRequest {
 
 
         return "/auth/signup";
     }
 
     @RequestMapping(path="/auth/signup", method = RequestMethod.POST)
-    public String signup(@Valid SignupMember signupMember, BindingResult bindingResult) throws BadHttpRequest {
+    public String signup(@Valid SignupUser signupMember, BindingResult bindingResult) throws BadHttpRequest {
 
         logger.debug("가입 요청");
 
@@ -67,7 +67,7 @@ public class AuthController {
             return "/auth/signup";
         }
 
-        memberService.signup(signupMember.buildMember());
+        userService.signup(signupMember.buildUser());
 
         return "redirect:/auth/signup_success";
     }

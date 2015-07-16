@@ -2,7 +2,7 @@ package com.sungmook.controller.web;
 
 import com.sungmook.Application;
 import com.sungmook.domain.AuthToken;
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import com.sungmook.domain.mail.SignupConfirmMail;
 import org.junit.After;
 import org.junit.Before;
@@ -91,13 +91,13 @@ public class AuthControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().hasNoErrors());
 
-        Member testMember = new Member();
-        testMember.setUsername("test@test.com");
-        SignupConfirmMail signupConfirmMail = new SignupConfirmMail(new AuthToken(testMember), null);
+        User testUser = new User();
+        testUser.setUsername("test@test.com");
+        SignupConfirmMail signupConfirmMail = new SignupConfirmMail(new AuthToken(testUser), null);
 
         assertReceivedMessage(wiser)
                 .from(from)
-                .to(testMember.getUsername())
+                .to(testUser.getUsername())
                 .withSubject(signupConfirmMail.getSubject());
 
 

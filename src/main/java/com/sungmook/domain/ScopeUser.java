@@ -1,13 +1,9 @@
 package com.sungmook.domain;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,16 +11,23 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class ContentReadUser {
+@Table(name = "SCOPE_USER")
+public class ScopeUser {
+
+    private ScopeUser(){}
+
+    public ScopeUser(Scope scope, User user){
+        this.scope = scope;
+        this.user = user;
+    }
 
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    private Content content;
+    private Scope scope;
 
-    @CreatedBy
     @ManyToOne
     private User user;
 

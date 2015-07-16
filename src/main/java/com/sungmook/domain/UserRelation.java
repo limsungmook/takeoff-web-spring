@@ -4,10 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,18 +12,26 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class ContentReadUser {
+public class UserRelation {
+
+
+    public enum Direction {
+        ONEWAY, DUPLEX
+    }
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private Content content;
-
     @CreatedBy
     @ManyToOne
-    private User user;
+    private User createUser;
+
+    @ManyToOne
+    private User receiveUser;
+
+    @Enumerated(EnumType.STRING)
+    private Direction direction;
 
     @CreatedDate
     private Date createdDate;

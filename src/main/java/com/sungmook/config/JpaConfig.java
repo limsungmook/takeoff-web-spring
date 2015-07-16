@@ -1,6 +1,6 @@
 package com.sungmook.config;
 
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import com.sungmook.security.SessionUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @EnableJpaAuditing
 public class JpaConfig {
     @Bean
-    public AuditorAware<Member> auditorProvider() {
+    public AuditorAware<User> auditorProvider() {
         return () -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -29,7 +29,7 @@ public class JpaConfig {
             if (principal.getClass() == String.class) {
                 return null;
             }
-            return new Member(((SessionUser) authentication.getPrincipal()).getMemberId());
+            return new User(((SessionUser) authentication.getPrincipal()).getUserId());
         };
     }
 

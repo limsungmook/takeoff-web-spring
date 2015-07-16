@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
 public interface ContentReadUserRepository extends JpaRepository<ContentReadUser, Long> {
-    ContentReadUser findOneByContentIdAndMemberId(Long id, Long memberId);
+    ContentReadUser findOneByContentIdAndUserId(Long id, Long memberId);
 }

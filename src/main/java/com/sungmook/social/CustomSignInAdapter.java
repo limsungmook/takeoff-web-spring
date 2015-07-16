@@ -1,8 +1,8 @@
 package com.sungmook.social;
 
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import com.sungmook.security.SessionUser;
-import com.sungmook.repository.MemberRepository;
+import com.sungmook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,20 +46,20 @@ public class CustomSignInAdapter implements SignInAdapter {
     private RememberMeServices rememberMeServices;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Override
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
 
-        Member member = memberRepository.findById(Long.valueOf(localUserId));
+        User user = userRepository.findById(Long.valueOf(localUserId));
         /**
          * 소셜 계정의 경우 초기 password 가 없을 수 있다.
          */
-        if( member.getEncryptedPassword() == null ){
+        if( user.getEncryptedPassword() == null ){
             SecureRandom random = new SecureRandom();
-            member.setEncryptedPasswordFromPassword(new BigInteger(130, random).toString(32));
+            user.setEncryptedPasswordFromPassword(new BigInteger(130, random).toString(32));
         }
-        SessionUser sessionUser = (SessionUser)userDetailsService.loadUserByUsername(member.getUsername());
+        SessionUser sessionUser = (SessionUser)userDetailsService.loadUserByUsername(user.getUsername());
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         SecurityContextHolder.getContext().setAuthentication( new UsernamePasswordAuthenticationToken( sessionUser, authentication.getCredentials(), sessionUser.getAuthorities() ) );

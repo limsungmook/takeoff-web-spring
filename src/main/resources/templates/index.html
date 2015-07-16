@@ -24,6 +24,7 @@
             </td>
             <td th:text="${story.rawText}">2.41</td>
             <td th:text="${story.createdDate}">yes</td>
+            <td th:text="*{story.scope != null} ? *{story.scope.name}">공개여부</td>
         </tr>
         <!--<tr th:each="prod : ${pagedStories.}">-->
             <!--<td th:text="${prod.name}">Onions</td>-->

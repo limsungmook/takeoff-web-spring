@@ -16,7 +16,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @DiscriminatorValue(value=Content.Discriminator.COMMENT_STRING)
 public class Comment extends Content{
 
-
     @ManyToOne
     private Story story;
+
 }

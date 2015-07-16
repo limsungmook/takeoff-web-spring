@@ -26,12 +26,12 @@ public class AuthToken {
     /**
      * http://stackoverflow.com/questions/41107/how-to-generate-a-random-alpha-numeric-string
      */
-    public AuthToken(Member member){
+    public AuthToken(User user){
         SecureRandom random = new SecureRandom();
         this.token = new BigInteger(130, random).toString(32);
 
         this.createdDate = new Date();
-        this.member = member;
+        this.user = user;
     }
 
     @Id
@@ -39,7 +39,7 @@ public class AuthToken {
     private Long id;
 
     @ManyToOne
-    private Member member;
+    private User user;
 
     @Enumerated(EnumType.STRING)
     private Type type;

@@ -17,7 +17,7 @@ public class SessionUser extends User {
         super(username, password, authorities);
     }
 
-    private Long memberId;
+    private Long userId;
     private String name;
     private String profilePic;
     private boolean admin;

@@ -1,8 +1,8 @@
 package com.sungmook.social;
 
-import com.sungmook.domain.Member;
-import com.sungmook.domain.SocialSignupMember;
-import com.sungmook.service.MemberService;
+import com.sungmook.domain.User;
+import com.sungmook.domain.SocialSignupUser;
+import com.sungmook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomConnectionSignUp implements ConnectionSignUp {
 
     @Autowired
-    private MemberService memberService;
+    private UserService userService;
     /**
      * 만약 해당 소셜 연결에서의 사용자가 존재하지 않을 때 이 클래스를 호출한다.
      * takeoff 는 소셜 로그인/가입 버튼을 눌렀을 때 만약 로컬에 계정이 존재하지 않으면
@@ -30,12 +30,12 @@ public class CustomConnectionSignUp implements ConnectionSignUp {
     @Transactional
     public String execute(Connection<?> connection) {
         ConnectionData data = connection.createData();
-        Member member = new SocialSignupMember().buildMember();
-        member.setName(data.getDisplayName());
-        member.setProfilePic(data.getProfileUrl());
+        User user = new SocialSignupUser().buildMember();
+        user.setName(data.getDisplayName());
+        user.setProfilePic(data.getProfileUrl());
 
-        memberService.socialInstantSignup(member);
+        userService.socialInstantSignup(user);
 
-        return String.valueOf(member.getId());
+        return String.valueOf(user.getId());
     }
 }

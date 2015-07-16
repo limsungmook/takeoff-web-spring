@@ -48,7 +48,7 @@ public class UsersConnectionRepositoryImpl implements UsersConnectionRepository 
     @Override
     public List<String> findUserIdsWithConnection(Connection<?> connection) {
         ConnectionKey key = connection.getKey();
-        List<Long> localUserIds = socialUserConnectionRepository.getMemberIdByProviderIdAndProviderUserId(key.getProviderId(), key.getProviderUserId());
+        List<Long> localUserIds = socialUserConnectionRepository.getUserIdByProviderIdAndProviderUserId(key.getProviderId(), key.getProviderUserId());
         if (localUserIds.size() == 0 && connectionSignUp != null) {
             String newUserId = connectionSignUp.execute(connection);
             if (newUserId != null)
@@ -69,7 +69,7 @@ public class UsersConnectionRepositoryImpl implements UsersConnectionRepository 
     @Override
     public Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds) {
 
-        final List<Long> localUserIds = socialUserConnectionRepository.findMemberIdByProviderIdAndProviderUserIdIn(providerId, providerUserIds);
+        final List<Long> localUserIds = socialUserConnectionRepository.findUserIdByProviderIdAndProviderUserIdIn(providerId, providerUserIds);
 
         Set<String> newSets = new HashSet<String>();
         for(Long userId : localUserIds ){

@@ -1,11 +1,11 @@
 package com.sungmook.service;
 
 import com.sungmook.domain.AuthToken;
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import com.sungmook.exception.CommonException;
 import com.sungmook.exception.InvalidTokenException;
 import com.sungmook.repository.AuthTokenRepository;
-import com.sungmook.repository.MemberRepository;
+import com.sungmook.repository.UserRepository;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +30,14 @@ public class AuthTokenService {
     private MailService mailService;
 
     @Autowired
-    private MemberService memberService;
+    private UserService userService;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Transactional
-    public void generateAndSendMail(AuthToken.Type type, Member member){
-        AuthToken authToken = new AuthToken(member);
+    public void generateAndSendMail(AuthToken.Type type, User user){
+        AuthToken authToken = new AuthToken(user);
         authToken.setType(type);
         authTokenRepository.save(authToken);
 
@@ -48,11 +48,11 @@ public class AuthTokenService {
     @Transactional
     public void generateAndSendMail(AuthToken.Type type, String email){
 
-        Member member = memberRepository.findByUsername(email);
-        if( member == null ){
+        User user = userRepository.findByUsername(email);
+        if( user == null ){
             throw new CommonException("존재하지 않는 사용자입니다.");
         }
-        AuthToken authToken = new AuthToken(member);
+        AuthToken authToken = new AuthToken(user);
         authToken.setType(type);
         authTokenRepository.save(authToken);
 
@@ -75,7 +75,7 @@ public class AuthTokenService {
         }
 
         // 3. 이상한 사용자가 토큰 사용함. 어뷰징.
-        if( !authToken.getMember().getId().equals(memberId) ){
+        if( !authToken.getUser().getId().equals(memberId) ){
             throw new InvalidTokenException();
         }
 
@@ -87,7 +87,7 @@ public class AuthTokenService {
 
         switch (authToken.getType() ){
             case SIGNUP:
-                memberService.confirmSignup(authToken.getMember().getId());
+                userService.confirmSignup(authToken.getUser().getId());
                 authToken.setConfirmDate(new Date());
                 authTokenRepository.save(authToken);
                 break;
@@ -111,11 +111,11 @@ public class AuthTokenService {
     @Transactional
     public void validAndConfirmAndChangePassword(Long authTokenId, Long memberId, String password) {
         AuthToken authToken = authTokenRepository.findOne(authTokenId);
-        if( !authToken.getMember().getId().equals(memberId) ) {
+        if( !authToken.getUser().getId().equals(memberId) ) {
             throw new CommonException("토큰의 소유자가 다릅니다.");
         }
-        Member member = memberRepository.findById(memberId);
-        member.setEncryptedPasswordFromPassword(password);
-        memberRepository.save(member);
+        User user = userRepository.findById(memberId);
+        user.setEncryptedPasswordFromPassword(password);
+        userRepository.save(user);
     }
 }

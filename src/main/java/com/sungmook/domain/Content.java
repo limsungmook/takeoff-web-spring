@@ -59,10 +59,10 @@ public abstract class Content {
 
     @CreatedBy
     @ManyToOne
-    private Member member;
+    private User user;
 
     @OneToMany(mappedBy = "content")
-    private List<ContentReadUser> contentReadUser;
+    private List<ContentReadUser> contentReadUserList;
 
 
 }

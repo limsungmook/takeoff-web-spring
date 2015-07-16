@@ -3,7 +3,7 @@ package com.sungmook.service;
 import com.sungmook.domain.ContentReadUser;
 import com.sungmook.domain.Story;
 import com.sungmook.repository.ContentReadUserRepository;
-import com.sungmook.repository.MemberRepository;
+import com.sungmook.repository.UserRepository;
 import com.sungmook.repository.StoryRepository;
 import com.sungmook.security.GetCurrentUser;
 import com.sungmook.security.SessionUser;
@@ -34,7 +34,7 @@ public class StoryService {
     private ContentReadUserRepository contentReadUserRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Transactional
     public void save(Story story){
@@ -60,8 +60,8 @@ public class StoryService {
         }
 
         // 로그인한 사용자가 존재할 때는 ContentReadUser 엔티티를 뒤져서 만약 존재하면 pass 하고 존재하지 않으면 조회수를 증가한다.
-        if( sessionUser != null && !(story.getMember().getId().equals(sessionUser.getMemberId()))){
-            ContentReadUser contentReadUser = contentReadUserRepository.findOneByContentIdAndMemberId(id, sessionUser.getMemberId());
+        if( sessionUser != null && !(story.getUser().getId().equals(sessionUser.getUserId()))){
+            ContentReadUser contentReadUser = contentReadUserRepository.findOneByContentIdAndUserId(id, sessionUser.getUserId());
             if( contentReadUser == null ){
                 contentReadUser = new ContentReadUser();
                 contentReadUser.setContent(story);

@@ -2,7 +2,10 @@ package com.sungmook.controller.web;
 
 import com.sungmook.domain.Comment;
 import com.sungmook.domain.Story;
+import com.sungmook.domain.User;
 import com.sungmook.repository.CommentRepository;
+import com.sungmook.repository.UserRepository;
+import com.sungmook.security.SessionUser;
 import com.sungmook.service.CommentService;
 import com.sungmook.service.StoryService;
 import org.slf4j.Logger;
@@ -34,8 +37,14 @@ public class StoryController{
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @RequestMapping(path = "/story/write", method = RequestMethod.GET)
-    public String form(Story story){
+    public String form(SessionUser sessionUser, Story story, Model model){
+        User user = userRepository.findById(sessionUser.getUserId());
+        model.addAttribute(story);
+        model.addAttribute("scopes", user.getScopeList());
         return "/story/write";
     }
 

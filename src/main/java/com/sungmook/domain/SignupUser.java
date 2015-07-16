@@ -2,6 +2,7 @@ package com.sungmook.domain;
 
 import com.sungmook.domain.validation.constrant.NoDuplicatedUsername;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -10,9 +11,10 @@ import org.hibernate.validator.constraints.NotEmpty;
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
 @Data
-public class SignupMember extends Member {
+@ToString
+public class SignupUser extends User {
 
-    public SignupMember() {
+    public SignupUser() {
         this.addRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
     }
 
@@ -27,12 +29,13 @@ public class SignupMember extends Member {
      * @return
      * 새롭게 생성된 Member 인스턴스
      */
-    public Member buildMember(){
-        Member member = new Member();
-        member.setUsername(super.getUsername());
-        member.setEncryptedPassword(super.getEncryptedPassword());
-        member.setRoles(super.getRoles());
-        return member;
+    public User buildUser(){
+        User user = new User();
+        user.setUsername(super.getUsername());
+        user.setName(super.getName());
+        user.setEncryptedPassword(super.getEncryptedPassword());
+        user.setRoles(super.getRoles());
+        return user;
     }
 
     @NoDuplicatedUsername

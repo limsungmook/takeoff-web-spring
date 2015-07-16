@@ -1,11 +1,14 @@
 package com.sungmook.config.profile;
 
 import com.sungmook.domain.Role;
-import com.sungmook.domain.SignupMember;
+import com.sungmook.domain.Scope;
+import com.sungmook.domain.SignupUser;
 import com.sungmook.domain.Story;
-import com.sungmook.repository.MemberRepository;
 import com.sungmook.repository.RoleRepository;
+import com.sungmook.repository.ScopeRepository;
+import com.sungmook.repository.UserRepository;
 import com.sungmook.security.LoginHelper;
+import com.sungmook.service.ScopeService;
 import com.sungmook.service.StoryService;
 import org.h2.server.web.WebServlet;
 import org.slf4j.Logger;
@@ -35,13 +38,19 @@ public class LocalConfig {
     private RoleRepository roleRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private StoryService storyService;
 
     @Autowired
     private LoginHelper loginHelper;
+
+    @Autowired
+    private ScopeService scopeService;
+
+    @Autowired
+    private ScopeRepository scopeRepository;
 
     /**
      * h2 Memory DB 의 콘솔을 열어준다.
@@ -60,6 +69,16 @@ public class LocalConfig {
 
 
         /**
+         * 기본 공개 세팅
+         */
+        Scope scope = scopeRepository.findByType(Scope.Type.GLOBAL);
+        if( scope == null ){
+            scope = new Scope(Scope.Type.GLOBAL);
+            scope.setName("전체공개");
+            scopeRepository.save(scope);
+        }
+
+        /**
          *  만약 Roles 가 없으면 기본 Roles 세팅
          */
         List<Role> roles = roleRepository.findAll();
@@ -70,7 +89,7 @@ public class LocalConfig {
         }
 
 
-        SignupMember user = new SignupMember();
+        SignupUser user = new SignupUser();
         user.setUsername("asdf@asdf.com");
         user.setPassword("asdf");
 
@@ -78,7 +97,7 @@ public class LocalConfig {
                 .addRole(Role.buildFromValue(Role.Value.USER))
                 .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
 
-        memberRepository.save(user.buildMember());
+        userRepository.save(user.buildUser());
 
         loginHelper.login(user.getUsername());
 
@@ -90,7 +109,7 @@ public class LocalConfig {
             storyService.save(story);
         }
 
-        SignupMember sungmook = new SignupMember();
+        SignupUser sungmook = new SignupUser();
         sungmook.setUsername("ipes4579@gmail.com");
         sungmook.setPassword("asdf");
 
@@ -98,7 +117,7 @@ public class LocalConfig {
                 .addRole(Role.buildFromValue(Role.Value.USER))
                 .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
 
-        memberRepository.save(sungmook.buildMember());
+        userRepository.save(sungmook.buildUser());
 
         loginHelper.login(sungmook.getUsername());
 

@@ -1,6 +1,6 @@
 package com.sungmook.social;
 
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import com.sungmook.repository.SocialUserConnectionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
     @Override
     public MultiValueMap<String, Connection<?>> findAllConnections() {
 
-        List<SocialUserConnection> socialUserConnections = socialUserConnectionRepository.findByMemberIdOrderByProviderIdAscRankAsc(memberId);
+        List<SocialUserConnection> socialUserConnections = socialUserConnectionRepository.findByUserIdOrderByProviderIdAscRankAsc(memberId);
 
         List<Connection<?>> resultList = connectionMapper.mapEntities( socialUserConnections );
         MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<String, Connection<?>>();
@@ -57,7 +57,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
     @Override
     public List<Connection<?>> findConnections(String providerId) {
-        return connectionMapper.mapEntities(socialUserConnectionRepository.findByMemberIdAndProviderIdOrderByRank(memberId, providerId));
+        return connectionMapper.mapEntities(socialUserConnectionRepository.findByUserIdAndProviderIdOrderByRank(memberId, providerId));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
     @Override
     public Connection<?> getConnection(ConnectionKey connectionKey) {
-        SocialUserConnection socialUserConnection = socialUserConnectionRepository.findByMemberIdAndProviderIdAndProviderUserId(memberId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
+        SocialUserConnection socialUserConnection = socialUserConnectionRepository.findByUserIdAndProviderIdAndProviderUserId(memberId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
         if(socialUserConnection == null){
             throw new NoSuchConnectionException(connectionKey);
         }
@@ -110,7 +110,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
     @Transactional(readOnly = true )
     private Connection<?> findPrimaryConnection(String providerId) {
-        List<Connection<?>> connections = connectionMapper.mapEntities(socialUserConnectionRepository.findByMemberIdAndProviderIdAndRank(memberId, providerId, 1));
+        List<Connection<?>> connections = connectionMapper.mapEntities(socialUserConnectionRepository.findByUserIdAndProviderIdAndRank(memberId, providerId, 1));
         if (connections.size() > 0) {
             return connections.get(0);
         } else {
@@ -134,7 +134,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
             int rank = getRank(data.getProviderId()) ;
             SocialUserConnection socialUserConnection = new SocialUserConnection();
-            socialUserConnection.setMember(new Member(memberId));
+            socialUserConnection.setUser(new User(memberId));
             socialUserConnection.setProviderId(data.getProviderId());
             socialUserConnection.setProviderUserId(data.getProviderUserId());
             socialUserConnection.setRank(rank);
@@ -156,7 +156,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
     @Transactional( readOnly = true )
     private int getRank(String providerId) {
-        Integer rank = socialUserConnectionRepository.findTopRankByMemberIdAndProviderId(memberId, providerId);
+        Integer rank = socialUserConnectionRepository.findTopRankByUserIdAndProviderId(memberId, providerId);
         if( rank == null ){
             rank = 1;
         }
@@ -170,7 +170,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
         ConnectionData data = connection.createData();
 
-        SocialUserConnection socialUserConnection = socialUserConnectionRepository.findByMemberIdAndProviderIdAndProviderUserId(memberId, data.getProviderId(), data.getProviderUserId());
+        SocialUserConnection socialUserConnection = socialUserConnectionRepository.findByUserIdAndProviderIdAndProviderUserId(memberId, data.getProviderId(), data.getProviderUserId());
         if( socialUserConnection == null ){
             return;
         }
@@ -185,13 +185,13 @@ public class ConnectionRepositoryImpl implements ConnectionRepository{
 
     @Override
     public void removeConnections(String providerId) {
-        List<SocialUserConnection> socialUserConnections = socialUserConnectionRepository.findByMemberIdAndProviderId(memberId, providerId);
+        List<SocialUserConnection> socialUserConnections = socialUserConnectionRepository.findByUserIdAndProviderId(memberId, providerId);
         socialUserConnectionRepository.delete(socialUserConnections);
     }
 
     @Override
     public void removeConnection(ConnectionKey connectionKey) {
-        SocialUserConnection socialUserConnection = socialUserConnectionRepository.findByMemberIdAndProviderIdAndProviderUserId(memberId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
+        SocialUserConnection socialUserConnection = socialUserConnectionRepository.findByUserIdAndProviderIdAndProviderUserId(memberId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
         socialUserConnectionRepository.delete(socialUserConnection);
     }
 

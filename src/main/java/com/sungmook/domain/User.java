@@ -17,18 +17,18 @@ import java.util.Set;
  * Created by Lim Sungmook(sungmook.lim@sk.com, ipes4579@gmail.com).
  */
 
-@Entity
 @Data
-public class Member {
+@Entity
+public class User {
 
 
     /**
      * SignupMember, SocialSignupMember 등의 자식들만 생성할 수 있음.
      */
-    public Member(){
+    public User(){
     }
 
-    public Member(Long id){
+    public User(Long id){
         this.id = id;
     }
 
@@ -53,11 +53,25 @@ public class Member {
     @CreatedDate
     private Date createdDate;
 
-    @OneToMany
-    private List<Content> contents;
+    @OneToMany(mappedBy = "user")
+    private List<Content> contentList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Scope> scopeList;
+
+
+    public List<Scope> getScopeList(){
+        if( this.scopeList != null ){
+            this.scopeList.add(0, Scope.buildGlobal());
+        }
+
+        return this.scopeList;
+    }
 
     private boolean admin;
 
+    @ManyToMany(mappedBy = "joinUserList")
+    private List<Scope> joinScopeList;
 
     @ManyToMany
     private Set<Role> roles;
@@ -66,7 +80,7 @@ public class Member {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public Member addRole(Role role){
+    public User addRole(Role role){
         if( roles == null ) {
             roles = new HashSet<Role>();
         }
@@ -74,7 +88,7 @@ public class Member {
         return this;
     }
 
-    public Member removeRole(Role role) {
+    public User removeRole(Role role) {
         if( roles == null ) {
             return this;
         }

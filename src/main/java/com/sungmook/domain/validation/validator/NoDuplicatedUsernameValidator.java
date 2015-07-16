@@ -1,8 +1,8 @@
 package com.sungmook.domain.validation.validator;
 
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import com.sungmook.domain.validation.constrant.NoDuplicatedUsername;
-import com.sungmook.repository.MemberRepository;
+import com.sungmook.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class NoDuplicatedUsernameValidator implements ConstraintValidator<NoDupl
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Override
     public void initialize(NoDuplicatedUsername noDuplicatedUsername) {
@@ -34,9 +34,9 @@ public class NoDuplicatedUsernameValidator implements ConstraintValidator<NoDupl
             return true;
         }
 
-        Member member = memberRepository.findByUsername(username.toString());
-        logger.debug("멤버 존재하는지? {}", member);
-        if( member != null ){
+        User user = userRepository.findByUsername(username.toString());
+        logger.debug("멤버 존재하는지? {}", user);
+        if( user != null ){
             return false;
         }
 

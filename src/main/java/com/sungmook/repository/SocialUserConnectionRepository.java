@@ -11,23 +11,23 @@ import java.util.Set;
  */
 public interface SocialUserConnectionRepository extends JpaRepository<SocialUserConnection, Long>{
 
-    List<Long> getMemberIdByProviderIdAndProviderUserId(String providerId, String providerUserId);
+    List<Long> getUserIdByProviderIdAndProviderUserId(String providerId, String providerUserId);
 
-    List<Long> findMemberIdByProviderIdAndProviderUserIdIn(String providerId, Set<String> providerUserIds);
+    List<Long> findUserIdByProviderIdAndProviderUserIdIn(String providerId, Set<String> providerUserIds);
 
-//    List<SocialUserConnection> findByMemberIdOrderByProviderIdAscAndRankAsc(Long memberId);
+//    List<SocialUserConnection> findByUserIdOrderByProviderIdAscAndRankAsc(Long userId);
 
-    List<SocialUserConnection> findByMemberIdAndProviderIdOrderByRank(Long memberId, String providerId);
+    List<SocialUserConnection> findByUserIdAndProviderIdOrderByRank(Long UserId, String providerId);
 
-    SocialUserConnection findByMemberIdAndProviderIdAndProviderUserId(Long memberId, String providerId, String providerUserId);
+    SocialUserConnection findByUserIdAndProviderIdAndProviderUserId(Long UserId, String providerId, String providerUserId);
 
-    List<SocialUserConnection> findByMemberIdAndProviderIdAndRank(Long memberId, String providerId, Integer rank);
+    List<SocialUserConnection> findByUserIdAndProviderIdAndRank(Long UserId, String providerId, Integer rank);
 
     List<Long> findIdByProviderIdAndProviderUserId(String providerId, String providerUserId);
 
-    Integer findTopRankByMemberIdAndProviderId(Long memberId, String providerId);
+    Integer findTopRankByUserIdAndProviderId(Long UserId, String providerId);
 
-    List<SocialUserConnection> findByMemberIdAndProviderId(Long memberId, String providerId);
+    List<SocialUserConnection> findByUserIdAndProviderId(Long UserId, String providerId);
 
-    List<SocialUserConnection> findByMemberIdOrderByProviderIdAscRankAsc(Long memberId);
+    List<SocialUserConnection> findByUserIdOrderByProviderIdAscRankAsc(Long UserId);
 }

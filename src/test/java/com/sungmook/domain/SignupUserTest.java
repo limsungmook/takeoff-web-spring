@@ -26,7 +26,7 @@ import static junit.framework.Assert.assertEquals;
 @SpringApplicationConfiguration(classes = Application.class)
 @DirtiesContext
 @WebAppConfiguration
-public class SignupMemberTest {
+public class SignupUserTest {
 
     private static Validator validator;
 
@@ -41,11 +41,11 @@ public class SignupMemberTest {
     @Test
     public void test_이메일이_비어있습니다() {
 
-        SignupMember signupMember = new SignupMember();
+        SignupUser signupMember = new SignupUser();
         signupMember.setPassword("test");
         signupMember.setReTypePassword("test");
 
-        Set<ConstraintViolation<SignupMember>> constraintViolations =
+        Set<ConstraintViolation<SignupUser>> constraintViolations =
                 validator.validate(signupMember);
 
         log.debug(constraintViolations.toString());

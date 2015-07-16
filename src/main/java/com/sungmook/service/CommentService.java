@@ -2,7 +2,7 @@ package com.sungmook.service;
 
 import com.sungmook.domain.Comment;
 import com.sungmook.repository.CommentRepository;
-import com.sungmook.repository.MemberRepository;
+import com.sungmook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @Transactional
     public void save(Comment comment){

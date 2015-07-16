@@ -12,7 +12,7 @@ public class SignupConfirmMail extends ConfirmMail {
 
     public SignupConfirmMail(AuthToken authToken, TemplateEngine templateEngine){
         super(authToken, templateEngine);
-        this.setTo(authToken.getMember().getUsername());
+        this.setTo(authToken.getUser().getUsername());
         this.setSubject("가입 확인 메일입니다.");
     }
 }

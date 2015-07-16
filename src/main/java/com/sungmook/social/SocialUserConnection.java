@@ -1,6 +1,6 @@
 package com.sungmook.social;
 
-import com.sungmook.domain.Member;
+import com.sungmook.domain.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class SocialUserConnection {
     private Long id;
 
     @ManyToOne
-    private Member member;
+    private User user;
 
     private String providerId;
 
