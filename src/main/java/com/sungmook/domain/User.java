@@ -59,6 +59,17 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Scope> scopeList;
 
+    private boolean admin;
+
+    @ManyToMany(mappedBy = "joinUserList")
+    private List<Scope> joinScopeList;
+
+    @ManyToMany
+    private Set<Role> roles;
+
+    @ManyToMany(mappedBy = "ownerList")
+    private List<Sticker> stickerList;
+
 
     public List<Scope> getScopeList(){
         if( this.scopeList != null ){
@@ -67,14 +78,6 @@ public class User {
 
         return this.scopeList;
     }
-
-    private boolean admin;
-
-    @ManyToMany(mappedBy = "joinUserList")
-    private List<Scope> joinScopeList;
-
-    @ManyToMany
-    private Set<Role> roles;
 
     protected void setEncryptedPassword(String encryptedPassword){
         this.encryptedPassword = encryptedPassword;

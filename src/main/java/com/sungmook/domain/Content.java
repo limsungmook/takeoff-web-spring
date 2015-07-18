@@ -54,6 +54,9 @@ public abstract class Content {
     @Type(type="text")
     private String rawText;
 
+    @OneToOne
+    private Act act;
+
     @CreatedDate
     private Date createdDate;
 
@@ -62,7 +65,7 @@ public abstract class Content {
     private User user;
 
     @OneToMany(mappedBy = "content")
-    private List<ContentReadUser> contentReadUserList;
+    private List<ContentActUser> contentActUserList;
 
 
 }

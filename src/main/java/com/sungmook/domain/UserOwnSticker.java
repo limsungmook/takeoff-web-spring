@@ -1,13 +1,9 @@
 package com.sungmook.domain;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,16 +11,23 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class ContentReadUser {
+@Table(name = "USER_OWN_STICKER")
+public class UserOwnSticker {
+
+    private UserOwnSticker(){}
+
+    public UserOwnSticker(User user, Sticker sticker){
+        this.sticker = sticker;
+        this.user = user;
+    }
 
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne
-    private Content content;
+    private Sticker sticker;
 
-    @CreatedBy
     @ManyToOne
     private User user;
 

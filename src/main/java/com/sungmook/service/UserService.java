@@ -1,13 +1,14 @@
 package com.sungmook.service;
 
-import com.sungmook.domain.AuthToken;
-import com.sungmook.domain.User;
-import com.sungmook.domain.Role;
+import com.sungmook.domain.*;
+import com.sungmook.repository.StickerRepository;
+import com.sungmook.repository.UserOwnStickerRepository;
 import com.sungmook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,6 +25,12 @@ public class UserService {
 
     @Autowired
     private ScopeService scopeService;
+
+    @Autowired
+    private StickerRepository stickerRepository;
+
+    @Autowired
+    private UserOwnStickerRepository userOwnStickerRepository;
 
     @Transactional
     public void socialInstantSignup(User user){
@@ -48,5 +55,11 @@ public class UserService {
         roles.clear();
         roles.add(Role.buildFromValue(Role.Value.USER));
         scopeService.setupDefaults(user);
+
+        List<Sticker> stickerList = stickerRepository.findByType(Sticker.Type.DEFAULT);
+        for( Sticker sticker : stickerList ){
+            UserOwnSticker userOwnSticker = new UserOwnSticker(user, sticker);
+            userOwnStickerRepository.save(userOwnSticker);
+        }
     }
 }

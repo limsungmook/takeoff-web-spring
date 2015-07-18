@@ -1,13 +1,10 @@
 package com.sungmook.config.profile;
 
-import com.sungmook.domain.Role;
-import com.sungmook.domain.Scope;
-import com.sungmook.domain.SignupUser;
-import com.sungmook.domain.Story;
 import com.sungmook.repository.RoleRepository;
 import com.sungmook.repository.ScopeRepository;
 import com.sungmook.repository.UserRepository;
 import com.sungmook.security.LoginHelper;
+import com.sungmook.service.InitService;
 import com.sungmook.service.ScopeService;
 import com.sungmook.service.StoryService;
 import org.h2.server.web.WebServlet;
@@ -20,7 +17,6 @@ import org.springframework.context.annotation.Profile;
 
 import javax.annotation.PostConstruct;
 import java.sql.SQLException;
-import java.util.List;
 
 
 /**
@@ -52,6 +48,11 @@ public class LocalConfig {
     @Autowired
     private ScopeRepository scopeRepository;
 
+
+    @Autowired
+    private InitService initService;
+
+
     /**
      * h2 Memory DB 의 콘솔을 열어준다.
      * {서버URL}/console/ 로 접속할 수 있다.
@@ -67,66 +68,7 @@ public class LocalConfig {
     @PostConstruct
     public void init(){
 
-
-        /**
-         * 기본 공개 세팅
-         */
-        Scope scope = scopeRepository.findByType(Scope.Type.GLOBAL);
-        if( scope == null ){
-            scope = new Scope(Scope.Type.GLOBAL);
-            scope.setName("전체공개");
-            scopeRepository.save(scope);
-        }
-
-        /**
-         *  만약 Roles 가 없으면 기본 Roles 세팅
-         */
-        List<Role> roles = roleRepository.findAll();
-        if( roles == null || roles.isEmpty() ){
-            for( Role.Value value : Role.Value.values() ){
-                roleRepository.saveAndFlush(Role.buildFromValue(value));
-            }
-        }
-
-
-        SignupUser user = new SignupUser();
-        user.setUsername("asdf@asdf.com");
-        user.setPassword("asdf");
-
-        user
-                .addRole(Role.buildFromValue(Role.Value.USER))
-                .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
-
-        userRepository.save(user.buildUser());
-
-        loginHelper.login(user.getUsername());
-
-        for(int i = 0; i < 5; i++){
-            // 테스트 스토리들 등록
-            Story story = new Story();
-            story.setTitle("asdf 의 글");
-            story.setRawText("asdf의  텍스트");
-            storyService.save(story);
-        }
-
-        SignupUser sungmook = new SignupUser();
-        sungmook.setUsername("ipes4579@gmail.com");
-        sungmook.setPassword("asdf");
-
-        sungmook
-                .addRole(Role.buildFromValue(Role.Value.USER))
-                .removeRole(Role.buildFromValue(Role.Value.INACTIVE_USER));
-
-        userRepository.save(sungmook.buildUser());
-
-        loginHelper.login(sungmook.getUsername());
-
-        for(int i = 0; i < 6; i++){
-            // 테스트 스토리들 등록
-            Story story = new Story();
-            story.setTitle("테스트 타이틀");
-            story.setRawText("테스트 텍스트");
-            storyService.save(story);
-        }
+        initService.checkAndInitApplication();
+        initService.initTest();
     }
 }
